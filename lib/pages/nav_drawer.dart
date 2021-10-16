@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:green_house/services/storage_service.dart';
 
 class NavigationDrawer extends StatelessWidget {
-  final String userName;
-  final String deviceId;
   final StorageService _storageService = StorageService.getInstance();
-
-  NavigationDrawer(this.userName, this.deviceId);
 
   void selectedItem(BuildContext buildContext, String selectedItem) {
     Navigator.of(buildContext).pushNamed(selectedItem);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:green_house/pages/home.dart';
 import 'package:green_house/services/rest_service.dart';
 import 'package:green_house/services/storage_service.dart';
+import 'package:green_house/util/UserContext.dart';
 import 'package:green_house/util/jwt-util.dart';
 
 class Login extends StatelessWidget {
@@ -27,11 +28,11 @@ class Login extends StatelessWidget {
       if (jwt != null && JwtUtil.isValid(jwt)) {
         StorageService.getInstance().writeJwtToDb(jwt);
         //await Navigator.of(buildContext).pushNamed('/');
+        UserContext.getInstance()
+            .setContextData(userName, jwt, JwtUtil.getDeviceId(jwt));
         await Navigator.push(
           buildContext,
-          MaterialPageRoute(
-              builder: (context) =>
-                  Home(JwtUtil.getUserName(jwt), JwtUtil.getDeviceId(jwt))),
+          MaterialPageRoute(builder: (context) => Home()),
         );
       } else {
         displayDialog(buildContext, "An Error Occurred",
@@ -127,7 +128,9 @@ class Login extends StatelessWidget {
                         foregroundColor:
                             MaterialStateProperty.all<Color>(Colors.blue),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pushNamed('/signUp');
+                      },
                       child: Text(
                         'Create New Account',
                         style: TextStyle(
